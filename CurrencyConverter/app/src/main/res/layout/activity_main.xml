@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context="com.darkpiv.currencyconverter.ui.activity.MainActivity">
 
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/edt_input_amount"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:met_hideUnderline="true" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,11 +20,14 @@
         android:orientation="horizontal"
         android:weightSum="1">
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edt_input_amount"
+        <com.weiwangcn.betterspinner.library.BetterSpinner
+            android:id="@+id/spn_from"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="0.45"
+            android:ellipsize="start"
+            android:hint="FROM"
+            android:spinnerMode="dropdown"
             app:met_hideUnderline="true" />
 
         <View
@@ -27,15 +36,36 @@
             android:layout_weight="0.1" />
 
         <com.weiwangcn.betterspinner.library.BetterSpinner
-            android:id="@+id/spn_from"
+            android:id="@+id/spn_to"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:hint="TO"
+            android:layout_weight="0.45"
+            android:ellipsize="start"
+            android:spinnerMode="dropdown"
+            app:met_hideUnderline="true" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tv_result"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="0.45" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="0.1" />
+
+
     </LinearLayout>
 
-    <com.weiwangcn.betterspinner.library.BetterSpinner
-        android:id="@+id/spn_to"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

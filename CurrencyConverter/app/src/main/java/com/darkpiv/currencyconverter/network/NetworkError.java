@@ -20,7 +20,7 @@ import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 public class NetworkError extends Throwable {
     public static final String DEFAULT_ERROR_MESSAGE = "Something went wrong! Please try again.";
     public static final String NETWORK_ERROR_MESSAGE = "No Internet Connection!";
-    private static final String ERROR_MESSAGE_HEADER = "Error-Message";
+    public static final String ERROR_MESSAGE_HEADER = "Error-Message";
     private final Throwable error;
 
     public NetworkError(Throwable e) {
