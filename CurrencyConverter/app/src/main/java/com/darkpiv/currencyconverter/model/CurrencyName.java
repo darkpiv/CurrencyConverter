@@ -1,11 +1,11 @@
 package com.darkpiv.currencyconverter.model;
 
-public class CurrencyName {
-    public String short_name;
-    public String abrivation;
+public class CurrencyName extends BaseModel{
+    public String code;
+    public String fullName;
 
-    public CurrencyName(String short_name, String abrivation) {
-        this.short_name = short_name;
-        this.abrivation = abrivation;
+    public CurrencyName(String code, String fullName) {
+        this.code = code;
+        this.fullName = fullName;
     }
 }

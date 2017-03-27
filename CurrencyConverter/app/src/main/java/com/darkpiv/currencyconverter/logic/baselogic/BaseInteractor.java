@@ -18,6 +18,14 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class BaseInteractor {
+
+    public static BaseInteractor instance;
+
+    public static BaseInteractor getInstance() {
+        if (instance == null) instance = new BaseInteractor();
+        return instance;
+    }
+
     private static final int NUMBER_OF_THREADS = 5;
 
     private ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(NUMBER_OF_THREADS);

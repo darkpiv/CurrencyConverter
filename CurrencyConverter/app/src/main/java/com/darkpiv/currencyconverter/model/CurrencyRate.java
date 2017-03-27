@@ -1,22 +1,17 @@
 package com.darkpiv.currencyconverter.model;
 
 
-public class CurrencyRate
-{
+public class CurrencyRate extends BaseModel{
 
-    public String title;
-    public String price;
+    public String code;
+    public String rate;
     public int imageId;
 
 
-    public CurrencyRate(String title, String price)
-    {
-        this.title = title;
-        this.price = price;
-
+    public CurrencyRate(String title, String rate) {
+        this.code = title;
+        this.rate = rate;
     }
-
-
 
 
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/edt_input_amount"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:met_floatingLabel="normal"
+        android:inputType="number"
+        app:met_clearButton="true"
+        android:paddingLeft="16dp"
+        app:met_hideUnderline="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <com.weiwangcn.betterspinner.library.BetterSpinner
+            android:id="@+id/spn_from"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="0.45"
+            android:ellipsize="start"
+            android:hint="FROM"
+            android:spinnerMode="dropdown"
+            app:met_hideUnderline="true" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="0.1" />
+
+        <com.weiwangcn.betterspinner.library.BetterSpinner
+            android:id="@+id/spn_to"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="0.45"
+            android:ellipsize="start"
+            android:hint="TO"
+            android:spinnerMode="dropdown"
+            app:met_hideUnderline="true" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="0.45" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="0.1" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="Convert"
+        android:id="@+id/btn_convert"
+        android:textColor="#FFF"
+        android:textSize="18sp"
+        android:background="@color/colorPrimary"
+        android:layout_height="56dp" />
+
+
+</LinearLayout>

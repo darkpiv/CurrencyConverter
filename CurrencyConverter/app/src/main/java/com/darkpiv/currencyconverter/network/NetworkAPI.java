@@ -1,6 +1,5 @@
 package com.darkpiv.currencyconverter.network;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
@@ -10,7 +9,9 @@ import retrofit2.http.GET;
 
 public interface NetworkAPI {
 
-    @GET("posts")
-    Call<ResponseBody> getPosts();
+    @GET("list?access_key=79660454f39ce2075c55af40a54dbfc5")
+    Call<String> getName();
+    @GET("live?access_key=79660454f39ce2075c55af40a54dbfc5")
+    Call<String> getRate();
 
 }

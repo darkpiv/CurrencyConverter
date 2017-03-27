@@ -1,4 +1,4 @@
-package com.darkpiv.currencyconverter.logic.apilistener;
+package com.darkpiv.currencyconverter.logic.baselogic;
 
 import android.support.annotation.NonNull;
 
