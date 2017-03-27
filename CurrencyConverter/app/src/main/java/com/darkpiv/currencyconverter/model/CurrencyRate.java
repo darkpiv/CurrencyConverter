@@ -1,7 +1,7 @@
 package com.darkpiv.currencyconverter.model;
 
 
-public class Currency_Rates
+public class CurrencyRate
 {
 
     public String title;
@@ -9,7 +9,7 @@ public class Currency_Rates
     public int imageId;
 
 
-    public Currency_Rates(String title, String price)
+    public CurrencyRate(String title, String price)
     {
         this.title = title;
         this.price = price;
