@@ -1,7 +1,7 @@
 package com.darkpiv.currencyconverter.logic.presenter;
 
 import android.support.annotation.NonNull;
-import android.widget.ArrayAdapter;
+import android.util.Log;
 
 import com.darkpiv.currencyconverter.logic.apihelper.ApiIml;
 import com.darkpiv.currencyconverter.logic.baselogic.BasePresenter;
@@ -27,16 +27,18 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
     private int idFrom, idTo, amount;
     private ArrayList<CurrencyRate> list_currency_rate_data;
     private ArrayList<CurrencyName> list_currency_name_data;
-    private ArrayAdapter<String> fromAdapter, toAdapter;
     private ApiIml apiIml;
     private NetworkAPI networkAPI;
+
+    public void setNetworkAPI(NetworkAPI networkAPI) {
+        this.networkAPI = networkAPI;
+    }
 
     @Override
     public void onViewAttached(@NonNull ConvertFragmentView view) {
         apiIml = new ApiIml(networkAPI);
         list_currency_name_data = new ArrayList<>();
         list_currency_rate_data = new ArrayList<>();
-        refreshData();
     }
 
     @Override
@@ -58,8 +60,9 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
     }
 
     public void convert() {
-        double y = Double.parseDouble(list_currency_rate_data.get(idTo).rate);
-        double x = Double.parseDouble(list_currency_rate_data.get(idFrom).rate);
+        double y = Double.parseDouble(list_currency_rate_data.get(idTo).getRate());
+        double x = Double.parseDouble(list_currency_rate_data.get(idFrom).getRate());
+        getView().onConverted(String.valueOf(amount * y / x));
 
     }
 
@@ -81,9 +84,15 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
         Collections.sort(list_currency_name_data, new Comparator<CurrencyName>() {
             @Override
             public int compare(CurrencyName n1, CurrencyName n2) {
-                return n1.code.compareTo(n2.code);
+                return n1.getCode().compareTo(n2.getCode());
             }
         });
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < list_currency_name_data.size(); i++) {
+            strings.add(list_currency_name_data.get(i).getCode());
+        }
+        getView().onDataUpdated(strings, strings);
+
     }
 
     private void onGetNameFailure(ErrorResponse errorResponse) {
@@ -120,13 +129,13 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
         Collections.sort(list_currency_rate_data, new Comparator<CurrencyRate>() {
             @Override
             public int compare(CurrencyRate r1, CurrencyRate r2) {
-                return r1.code.compareTo(r2.code);
+                return r1.getCode().compareTo(r2.getCode());
             }
         });
     }
 
     private void onGetRateFailure(ErrorResponse errorResponse) {
-
+        Log.d("XXX", "onGetRateFailure: " + errorResponse.getStatus());
     }
 
     public int getIdFrom() {
