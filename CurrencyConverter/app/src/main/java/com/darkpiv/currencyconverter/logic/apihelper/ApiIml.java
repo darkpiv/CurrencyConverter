@@ -41,6 +41,7 @@ public class ApiIml {
                         ls.onSuccess(object.getString("quotes"));
 
                     } catch (Exception e) {
+                        e.printStackTrace();
                         le.onError(new ErrorResponse().setStatus(e.getMessage()));
                     }
                 }
@@ -48,6 +49,7 @@ public class ApiIml {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
                 le.onError(new ErrorResponse().setStatus(t.getMessage()));
             }
         });
@@ -66,6 +68,7 @@ public class ApiIml {
                         ls.onSuccess(object.getString("currencies"));
 
                     } catch (Exception e) {
+                        e.printStackTrace();
                         le.onError(new ErrorResponse().setStatus(e.getMessage()));
                     }
                 }

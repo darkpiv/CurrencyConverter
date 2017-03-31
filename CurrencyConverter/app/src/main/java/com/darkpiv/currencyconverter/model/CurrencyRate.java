@@ -18,31 +18,35 @@ public class CurrencyRate extends BaseModel {
         return code;
     }
 
-    public void setCode(String code) {
+    public CurrencyRate setCode(String code) {
         this.code = code;
+        return this;
     }
 
     public String getRate() {
         return rate;
     }
 
-    public void setRate(String rate) {
+    public CurrencyRate setRate(String rate) {
         this.rate = rate;
+        return this;
     }
 
     public int getImageId() {
         return imageId;
     }
 
-    public void setImageId(int imageId) {
+    public CurrencyRate setImageId(int imageId) {
         this.imageId = imageId;
+        return this;
     }
 
     public String getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
+    public CurrencyRate setFullName(String fullName) {
         this.fullName = fullName;
+        return this;
     }
 }

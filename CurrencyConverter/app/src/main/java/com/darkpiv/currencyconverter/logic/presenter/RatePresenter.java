@@ -3,6 +3,7 @@ package com.darkpiv.currencyconverter.logic.presenter;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.darkpiv.currencyconverter.R;
 import com.darkpiv.currencyconverter.logic.apihelper.ApiIml;
 import com.darkpiv.currencyconverter.logic.baselogic.BasePresenter;
 import com.darkpiv.currencyconverter.logic.view.RateFragmentView;
@@ -72,7 +73,7 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
 
             split[1] = String.valueOf(refinedNumber);
 
-            list_currency_rate_data.add(new CurrencyRate(split[0], split[1]));
+            list_currency_rate_data.add(new CurrencyRate(split[0], split[1]).setImageId(R.drawable.aoa));
 
         }
 
@@ -107,14 +108,20 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
                 return n1.getCode().compareTo(n2.getCode());
             }
         });
-        Log.d("XX", "onGetNameSuccess: "+list_currency_name_data.size());
-        Log.d("xx", "onGetNameSuccess: "+list_currency_rate_data.size());
+
+        for (int i = 0; i < list_currency_rate_data.size(); i++) {
+            list_currency_rate_data.get(i).setFullName(list_currency_name_data.get(i).getFullName());
+        }
+
+        getView().onDataUpdated(list_currency_rate_data);
+        Log.d("XX", "onGetNameSuccess: " + list_currency_name_data.size());
+        Log.d("xx", "onGetNameSuccess: " + list_currency_rate_data.size());
         Log.d("", "onGetNameSuccess: ");
 
     }
 
     private void onGetNameFailure(ErrorResponse errorResponse) {
-        getView().onError(errorResponse);
+        Log.d("XXX", "onGetRateFailure: " + errorResponse.getStatus());
     }
 
     private void onGetRateFailure(ErrorResponse errorResponse) {

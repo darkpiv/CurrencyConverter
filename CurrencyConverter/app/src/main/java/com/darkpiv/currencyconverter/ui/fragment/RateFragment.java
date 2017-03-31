@@ -31,6 +31,7 @@ public class RateFragment extends BaseFragment implements RateFragmentView {
     @BindView(R.id.rv_rate)
     RecyclerView rvRate;
     RatePresenter ratePresenter;
+
     public static RateFragment newInstance(Bundle bundle) {
         RateFragment fragment = new RateFragment();
         fragment.setArguments(bundle);
@@ -67,7 +68,7 @@ public class RateFragment extends BaseFragment implements RateFragmentView {
     public void onDataUpdated(ArrayList<CurrencyRate> rate) {
         CurrencyAdapter adapter = new CurrencyAdapter(rate);
         rvRate.setItemAnimator(new DefaultItemAnimator());
-        rvRate.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvRate.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvRate.setHasFixedSize(true);
         rvRate.setAdapter(adapter);
     }
@@ -75,5 +76,11 @@ public class RateFragment extends BaseFragment implements RateFragmentView {
     @Override
     public void onError(ErrorResponse errorResponse) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ratePresenter.refreshData();
     }
 }
