@@ -14,6 +14,7 @@ import com.darkpiv.currencyconverter.ui.baseui.BaseFragment;
 import com.darkpiv.currencyconverter.ui.baseui.SmartFragmentStatePagerAdapter;
 import com.darkpiv.currencyconverter.ui.fragment.ConvertFragment;
 import com.darkpiv.currencyconverter.ui.fragment.RateFragment;
+import com.darkpiv.currencyconverter.util.ViewUtil;
 
 import butterknife.BindView;
 
@@ -32,7 +33,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpMain.setAdapter(adapterViewPager);
         slidingTabs.setupWithViewPager(vpMain);
@@ -40,6 +42,7 @@ public class MainActivity extends BaseActivity {
         vpMain.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                ViewUtil.hideKeyboardFrom(MainActivity.this,getCurrentFocus());
 
             }
 
@@ -53,6 +56,7 @@ public class MainActivity extends BaseActivity {
 
             }
         });
+
 
     }
 

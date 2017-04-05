@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/edt_input_amount"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:inputType="number"
-        android:paddingLeft="16dp"
+        android:layout_height="72dp"
         android:layout_alignParentTop="true"
+        android:inputType="number"
+        android:hint="Enter here"
+        android:textSize="18sp"
+        android:lines="1"
+        android:paddingLeft="16dp"
         app:met_clearButton="true"
         app:met_floatingLabel="normal"
         app:met_hideUnderline="true" />
 
     <LinearLayout
         android:id="@+id/ll_input"
-        android:layout_below="@+id/edt_input_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_input_amount"
         android:layout_margin="16dp"
         android:orientation="horizontal"
         android:weightSum="1">
@@ -53,32 +56,27 @@
 
     </LinearLayout>
 
-    <LinearLayout
+
+    <TextView
         android:layout_below="@+id/ll_input"
+        android:id="@+id/tv_result"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <TextView
-            android:id="@+id/tv_result"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="0.45" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="0.1" />
-
-
-    </LinearLayout>
+        android:layout_height="64dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:textSize="26sp"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:hint="RESULT"
+        android:textColorHint="#fff"
+        android:background="@drawable/tv_result_bg" />
 
     <Button
-        android:layout_alignParentBottom="true"
         android:id="@+id/btn_convert"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
         android:text="Convert"
         android:textColor="#FFF"
