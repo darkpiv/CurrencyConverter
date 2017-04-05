@@ -1,5 +1,6 @@
 package com.darkpiv.currencyconverter.logic.presenter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -11,6 +12,7 @@ import com.darkpiv.currencyconverter.model.CurrencyName;
 import com.darkpiv.currencyconverter.model.CurrencyRate;
 import com.darkpiv.currencyconverter.model.ErrorResponse;
 import com.darkpiv.currencyconverter.network.NetworkAPI;
+import com.darkpiv.currencyconverter.util.JSONUtil;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -29,6 +31,10 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
     private ArrayList<CurrencyName> list_currency_name_data;
     private ApiIml apiIml;
     private NetworkAPI networkAPI;
+    private Context context;
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     public void setNetworkAPI(NetworkAPI networkAPI) {
         this.networkAPI = networkAPI;
@@ -51,6 +57,11 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
     }
 
     private void onGetRateSuccess(String rate) {
+        parseRate(rate);
+        apiIml.getName(this::onGetNameSuccess, this::onGetNameFailure);
+    }
+
+    private void parseRate(String rate) {
         String temp1 = rate;
         temp1 = temp1.replace("{", "");
         temp1 = temp1.replace("}", "");
@@ -84,11 +95,15 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
             }
         });
 
-        apiIml.getName(this::onGetNameSuccess, this::onGetNameFailure);
     }
 
     private void onGetNameSuccess(String name) {
+        parseName(name);
+    }
+
+    private void parseName(String name) {
         String temp = name;
+
         temp = temp.replace("{", "");
         temp = temp.replace("}", "");
         temp = temp.replace("\"", "");
@@ -110,22 +125,35 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
         });
 
         for (int i = 0; i < list_currency_rate_data.size(); i++) {
-            list_currency_rate_data.get(i).setFullName(list_currency_name_data.get(i).getFullName());
+            CurrencyRate currencyRate = list_currency_rate_data.get(i);
+            currencyRate.setFullName(list_currency_name_data.get(i).getFullName());
+            currencyRate.setCode(list_currency_name_data.get(i).getCode());
+            String s = currencyRate.getCode().substring(currencyRate.getCode().length()-3,currencyRate.getCode().length());
+            int resId = context.getResources()
+                    .getIdentifier(s.toLowerCase()
+                            , "drawable", context.getPackageName());
+            if(resId==0)  resId = R.drawable.vnd;
+            list_currency_rate_data.get(i).setImageId(resId);
         }
 
         getView().onDataUpdated(list_currency_rate_data);
         Log.d("XX", "onGetNameSuccess: " + list_currency_name_data.size());
         Log.d("xx", "onGetNameSuccess: " + list_currency_rate_data.size());
         Log.d("", "onGetNameSuccess: ");
-
     }
 
     private void onGetNameFailure(ErrorResponse errorResponse) {
         Log.d("XXX", "onGetRateFailure: " + errorResponse.getStatus());
+
+        String name = JSONUtil.loadJSONFromAsset(context,"country_name");
+        parseName(name);
+
     }
 
     private void onGetRateFailure(ErrorResponse errorResponse) {
         Log.d("XXX", "onGetRateFailure: " + errorResponse.getStatus());
+        String rate = JSONUtil.loadJSONFromAsset(context,"country_rate");
+        parseRate(rate);
     }
 
 }

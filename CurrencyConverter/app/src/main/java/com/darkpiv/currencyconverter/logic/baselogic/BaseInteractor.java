@@ -34,13 +34,19 @@ public class BaseInteractor {
 
     private ScheduledFuture<?> scheduledFuture;
 
-    protected void runOnUiThread(@NonNull Runnable runnable) {
+    public void runOnUiThread(@NonNull Runnable runnable) {
         PreConditions.checkNotNull(runnable, "runnable shouldn't be null");
 
         handler.post(runnable);
     }
 
-    protected void runOnBackground(@NonNull Runnable runnable) {
+    public void runOnUiThreadAfter(@NonNull Runnable runnable, long time) {
+        PreConditions.checkNotNull(runnable, "runnable shouldn't be null");
+
+        handler.postDelayed(runnable, time);
+    }
+
+    public void runOnBackground(@NonNull Runnable runnable) {
         PreConditions.checkNotNull(runnable, "runnable shouldn't be null");
 
         if (executor.isShutdown()) {
@@ -54,7 +60,7 @@ public class BaseInteractor {
         }
     }
 
-    protected void runScheduledTaskOnBackground(@NonNull Runnable runnable, @NonNull Long time, @NonNull TimeUnit unit) {
+    public void runScheduledTaskOnBackground(@NonNull Runnable runnable, @NonNull Long time, @NonNull TimeUnit unit) {
         PreConditions.checkNotNull(runnable, "runnable shouldn't be null");
         PreConditions.checkNotNull(time, "time shouldn't be null");
         PreConditions.checkNotNull(unit, "unit shouldn't be null");
@@ -62,7 +68,7 @@ public class BaseInteractor {
         scheduledFuture = scheduledExecutor.schedule(runnable, time, unit);
     }
 
-    protected void cancelScheduledTask() {
+    public void cancelScheduledTask() {
         if (null != scheduledFuture) {
             scheduledFuture.cancel(true);
         }

@@ -18,6 +18,7 @@ import com.darkpiv.currencyconverter.network.NetworkAPI;
 import com.darkpiv.currencyconverter.ui.adapter.CurrencyAdapter;
 import com.darkpiv.currencyconverter.ui.baseui.BaseFragment;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -58,10 +59,14 @@ public class RateFragment extends BaseFragment implements RateFragmentView {
         super.onCreateView(inflater, container, savedInstanceState);
         ratePresenter = new RatePresenter();
         ratePresenter.setNetworkAPI(getNetworkApi());
+        ratePresenter.setContext(getContext());
         ratePresenter.attachView(this);
-        ratePresenter.refreshData();
-
+        refreshData();
         return rootView;
+    }
+
+    private void refreshData() {
+        getInteractor().runOnUiThreadAfter(new RefreshData(ratePresenter), 500);
     }
 
     @Override
@@ -69,7 +74,6 @@ public class RateFragment extends BaseFragment implements RateFragmentView {
         CurrencyAdapter adapter = new CurrencyAdapter(rate);
         rvRate.setItemAnimator(new DefaultItemAnimator());
         rvRate.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rvRate.setHasFixedSize(true);
         rvRate.setAdapter(adapter);
     }
 
@@ -81,6 +85,21 @@ public class RateFragment extends BaseFragment implements RateFragmentView {
     @Override
     public void onResume() {
         super.onResume();
-        ratePresenter.refreshData();
+    }
+
+    public static class RefreshData implements Runnable {
+
+        public WeakReference<RatePresenter> ref;
+
+        public RefreshData(RatePresenter presenter) {
+            this.ref = new WeakReference<RatePresenter>(presenter);
+        }
+
+        @Override
+        public void run() {
+            if (ref != null) {
+                ref.get().refreshData();
+            }
+        }
     }
 }
