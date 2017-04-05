@@ -21,8 +21,8 @@ import com.darkpiv.currencyconverter.logic.view.ConvertFragmentView;
 import com.darkpiv.currencyconverter.model.ErrorResponse;
 import com.darkpiv.currencyconverter.network.NetworkAPI;
 import com.darkpiv.currencyconverter.ui.baseui.BaseFragment;
+import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
-import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.util.ArrayList;
 
@@ -39,9 +39,9 @@ public class ConvertFragment extends BaseFragment implements ConvertFragmentView
     @BindView(R.id.edt_input_amount)
     MaterialEditText edtInputAmount;
     @BindView(R.id.spn_from)
-    BetterSpinner spnFrom;
+    MaterialAutoCompleteTextView spnFrom;
     @BindView(R.id.spn_to)
-    BetterSpinner spnTo;
+    MaterialAutoCompleteTextView spnTo;
     @BindView(R.id.tv_result)
     TextView tvResult;
     @BindView(R.id.btn_convert)

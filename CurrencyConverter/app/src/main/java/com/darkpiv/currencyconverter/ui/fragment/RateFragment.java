@@ -1,12 +1,12 @@
 package com.darkpiv.currencyconverter.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 
 import com.darkpiv.currencyconverter.R;
 import com.darkpiv.currencyconverter.logic.baselogic.BaseInteractor;
@@ -22,6 +22,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 
 /**
  * Created by darkpiv on 3/27/17.
@@ -72,7 +73,8 @@ public class RateFragment extends BaseFragment implements RateFragmentView {
     @Override
     public void onDataUpdated(ArrayList<CurrencyRate> rate) {
         CurrencyAdapter adapter = new CurrencyAdapter(rate);
-        rvRate.setItemAnimator(new DefaultItemAnimator());
+        
+        rvRate.setItemAnimator(animator);
         rvRate.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvRate.setAdapter(adapter);
     }

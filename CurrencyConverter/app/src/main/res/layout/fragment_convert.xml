@@ -29,14 +29,13 @@
         android:orientation="horizontal"
         android:weightSum="1">
 
-        <com.weiwangcn.betterspinner.library.BetterSpinner
+        <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
             android:id="@+id/spn_from"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="0.45"
             android:ellipsize="start"
             android:hint="FROM"
-            android:spinnerMode="dropdown"
             app:met_hideUnderline="true" />
 
         <View
@@ -44,14 +43,13 @@
             android:layout_height="56dp"
             android:layout_weight="0.1" />
 
-        <com.weiwangcn.betterspinner.library.BetterSpinner
+        <com.rengwuxian.materialedittext.MaterialAutoCompleteTextView
             android:id="@+id/spn_to"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="0.45"
             android:ellipsize="start"
             android:hint="TO"
-            android:spinnerMode="dropdown"
             app:met_hideUnderline="true" />
 
     </LinearLayout>

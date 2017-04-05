@@ -42,6 +42,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
     @Override
     public void onBindViewHolder(CurrencyHolder holder, int position) {
         final CurrencyRate currencyRate = currencyRates.get(holder.getAdapterPosition());
+
         holder.ivCountry.setImageResource(currencyRate.getImageId());
         holder.tvName.setText(currencyRate.getCode());
         holder.tvRate.setText(currencyRate.getRate());
