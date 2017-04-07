@@ -1,5 +1,6 @@
 package com.darkpiv.currencyconverter.logic.presenter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -10,6 +11,9 @@ import com.darkpiv.currencyconverter.model.CurrencyName;
 import com.darkpiv.currencyconverter.model.CurrencyRate;
 import com.darkpiv.currencyconverter.model.ErrorResponse;
 import com.darkpiv.currencyconverter.network.NetworkAPI;
+import com.darkpiv.currencyconverter.util.JSONUtil;
+
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -24,11 +28,17 @@ import java.util.StringTokenizer;
  */
 
 public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
+    public static final String TAG = "Convert";
     private int idFrom, idTo, amount;
     private ArrayList<CurrencyRate> list_currency_rate_data;
     private ArrayList<CurrencyName> list_currency_name_data;
     private ApiIml apiIml;
     private NetworkAPI networkAPI;
+    private DecimalFormat df = new DecimalFormat("###.##");
+    private Context context;
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     public void setNetworkAPI(NetworkAPI networkAPI) {
         this.networkAPI = networkAPI;
@@ -60,17 +70,25 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
     }
 
     public void convert() {
-        double y = Double.parseDouble(list_currency_rate_data.get(idTo).getRate());
+
         double x = Double.parseDouble(list_currency_rate_data.get(idFrom).getRate());
-        getView().onConverted(String.valueOf(amount * y / x));
+        double y = Double.parseDouble(list_currency_rate_data.get(idTo).getRate());
+        double mm = amount * y / x;
+        getView().onConverted(String.format(String.valueOf(mm), df));
 
     }
 
     private void onGetNameSuccess(String name) {
+        parseName(name);
+    }
+
+    public void parseName(String name) {
         String temp = name;
         temp = temp.replace("{", "");
         temp = temp.replace("}", "");
         temp = temp.replace("\"", "");
+        temp = temp.replace("\n", "");
+
         StringTokenizer stoke = new StringTokenizer(temp, ",");
         while (stoke.hasMoreElements()) {
 
@@ -92,20 +110,14 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
             strings.add(list_currency_name_data.get(i).getCode());
         }
         getView().onDataUpdated(strings, strings);
-
     }
 
-    private void onGetNameFailure(ErrorResponse errorResponse) {
-        getView().onError(errorResponse);
-    }
-
-    private void onGetRateSuccess(String rate) {
+    public void parseRate(String rate) {
         String temp1 = rate;
         temp1 = temp1.replace("{", "");
         temp1 = temp1.replace("}", "");
         temp1 = temp1.replace("\"", "");
         temp1 = temp1.replace("\n", "");
-
         StringTokenizer stok = new StringTokenizer(temp1, ",");
 
         while (stok.hasMoreElements()) {
@@ -133,9 +145,36 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
             }
         });
     }
+    private void onGetRateSuccess(String rate) {
+        parseRate(rate);
+        Log.d(TAG, "xxxxxxxxxx: "+list_currency_rate_data.size());
+
+    }
+
+    private void onGetNameFailure(ErrorResponse errorResponse) {
+        Log.d("XXX", "onGetRateFailure: " + errorResponse.getStatus());
+
+        String name = JSONUtil.loadJSONFromAsset(context, "country_name");
+        try {
+            JSONObject object = new JSONObject(name);
+            parseName(object.getString("currencies"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void onGetRateFailure(ErrorResponse errorResponse) {
         Log.d("XXX", "onGetRateFailure: " + errorResponse.getStatus());
+        String rate = JSONUtil.loadJSONFromAsset(context, "country_rate");
+        try {
+            JSONObject object = new JSONObject(rate);
+
+            parseRate(object.getString("quotes"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public int getIdFrom() {

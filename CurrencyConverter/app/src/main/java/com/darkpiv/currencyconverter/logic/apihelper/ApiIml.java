@@ -22,9 +22,6 @@ import retrofit2.Response;
 public class ApiIml {
     private NetworkAPI networkAPI;
 
-    public ApiIml() {
-    }
-
     public ApiIml(NetworkAPI networkAPI) {
         this.networkAPI = networkAPI;
     }

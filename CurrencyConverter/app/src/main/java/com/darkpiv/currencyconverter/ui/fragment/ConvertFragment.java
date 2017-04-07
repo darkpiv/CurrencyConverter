@@ -21,8 +21,8 @@ import com.darkpiv.currencyconverter.logic.view.ConvertFragmentView;
 import com.darkpiv.currencyconverter.model.ErrorResponse;
 import com.darkpiv.currencyconverter.network.NetworkAPI;
 import com.darkpiv.currencyconverter.ui.baseui.BaseFragment;
-import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.util.ArrayList;
 
@@ -34,30 +34,30 @@ import butterknife.OnClick;
  */
 
 public class ConvertFragment extends BaseFragment implements ConvertFragmentView {
-    private ArrayAdapter<String> fromAdapter, toAdapter;
     public static final String TAG = ConvertFragment.class.getSimpleName();
     @BindView(R.id.edt_input_amount)
     MaterialEditText edtInputAmount;
     @BindView(R.id.spn_from)
-    MaterialAutoCompleteTextView spnFrom;
+    BetterSpinner spnFrom;
     @BindView(R.id.spn_to)
-    MaterialAutoCompleteTextView spnTo;
+    BetterSpinner spnTo;
     @BindView(R.id.tv_result)
     TextView tvResult;
     @BindView(R.id.btn_convert)
     Button btnConvert;
     ConvertPresenter convertPresenter;
-
-    @OnClick(R.id.btn_convert)
-    public void convert(View view) {
-        convertPresenter.convert();
-    }
+    private ArrayAdapter<String> fromAdapter, toAdapter;
 
     public static ConvertFragment newInstance(Bundle bundle) {
         ConvertFragment fragment = new ConvertFragment();
         fragment.setArguments(bundle);
         return fragment;
 
+    }
+
+    @OnClick(R.id.btn_convert)
+    public void convert(View view) {
+        convertPresenter.convert();
     }
 
     @Nullable
@@ -74,6 +74,7 @@ public class ConvertFragment extends BaseFragment implements ConvertFragmentView
                 android.R.layout.simple_dropdown_item_1line, strings);
 */
         convertPresenter = new ConvertPresenter();
+        convertPresenter.setContext(getContext());
         convertPresenter.setNetworkAPI(getNetworkApi());
         convertPresenter.attachView(this);
         convertPresenter.refreshData();
@@ -98,22 +99,13 @@ public class ConvertFragment extends BaseFragment implements ConvertFragmentView
         spnFrom.setBackgroundResource(R.drawable.oval_bg);
         spnTo.setBackgroundResource(R.drawable.oval_bg);
         spnFrom.setOnItemClickListener((parent, view, position, id) -> {
-            Log.d(TAG, "onItemSelected: from" + position);
             convertPresenter.setIdFrom(position);
         });
 
         spnTo.setOnItemClickListener((parent, view, position, id) -> {
-                    Log.d(TAG, "onItemSelected: to" + position);
-                    convertPresenter.setIdTo(position);
-                }
-        );
-
-       /* edtInputAmount.setOnFocusChangeListener((view, hasFocus) -> {
-            if (!hasFocus) {
-
-            }
-
-        });*/
+            Log.d(TAG, "onItemSelected: to" + position);
+            convertPresenter.setIdTo(position);
+        });
 
         edtInputAmount.addTextChangedListener(new TextWatcher() {
             @Override

@@ -14,6 +14,8 @@ import com.darkpiv.currencyconverter.model.ErrorResponse;
 import com.darkpiv.currencyconverter.network.NetworkAPI;
 import com.darkpiv.currencyconverter.util.JSONUtil;
 
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
     private ApiIml apiIml;
     private NetworkAPI networkAPI;
     private Context context;
+
     public void setContext(Context context) {
         this.context = context;
     }
@@ -67,7 +70,6 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
         temp1 = temp1.replace("}", "");
         temp1 = temp1.replace("\"", "");
         temp1 = temp1.replace("\n", "");
-
         StringTokenizer stok = new StringTokenizer(temp1, ",");
 
         while (stok.hasMoreElements()) {
@@ -84,7 +86,7 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
 
             split[1] = String.valueOf(refinedNumber);
 
-            list_currency_rate_data.add(new CurrencyRate(split[0], split[1]).setImageId(R.drawable.aoa));
+            list_currency_rate_data.add(new CurrencyRate(split[0], split[1]));
 
         }
 
@@ -107,6 +109,7 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
         temp = temp.replace("{", "");
         temp = temp.replace("}", "");
         temp = temp.replace("\"", "");
+        temp = temp.replace("\n", "");
         StringTokenizer stoke = new StringTokenizer(temp, ",");
         while (stoke.hasMoreElements()) {
 
@@ -124,16 +127,19 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
             }
         });
 
+
         for (int i = 0; i < list_currency_rate_data.size(); i++) {
             CurrencyRate currencyRate = list_currency_rate_data.get(i);
+
             currencyRate.setFullName(list_currency_name_data.get(i).getFullName());
-            currencyRate.setCode(list_currency_name_data.get(i).getCode());
-            String s = currencyRate.getCode().substring(currencyRate.getCode().length()-3,currencyRate.getCode().length());
+
+            String s = currencyRate.getCode().substring(currencyRate.getCode().length() - 3, currencyRate.getCode().length());
+            currencyRate.setCode(s);
             int resId = context.getResources()
                     .getIdentifier(s.toLowerCase()
                             , "drawable", context.getPackageName());
-            if(resId==0)  resId = R.drawable.vnd;
-            list_currency_rate_data.get(i).setImageId(resId);
+            if (resId == 0) resId = R.drawable.vnd;
+            currencyRate.setImageId(resId);
         }
 
         getView().onDataUpdated(list_currency_rate_data);
@@ -145,15 +151,27 @@ public class RatePresenter extends BasePresenter<RateFragmentView> {
     private void onGetNameFailure(ErrorResponse errorResponse) {
         Log.d("XXX", "onGetRateFailure: " + errorResponse.getStatus());
 
-        String name = JSONUtil.loadJSONFromAsset(context,"country_name");
-        parseName(name);
+        String name = JSONUtil.loadJSONFromAsset(context, "country_name");
+        try {
+            JSONObject object = new JSONObject(name);
+            parseName(object.getString("currencies"));
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void onGetRateFailure(ErrorResponse errorResponse) {
         Log.d("XXX", "onGetRateFailure: " + errorResponse.getStatus());
-        String rate = JSONUtil.loadJSONFromAsset(context,"country_rate");
-        parseRate(rate);
+        String rate = JSONUtil.loadJSONFromAsset(context, "country_rate");
+        try {
+            JSONObject object = new JSONObject(rate);
+
+            parseRate(object.getString("quotes"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

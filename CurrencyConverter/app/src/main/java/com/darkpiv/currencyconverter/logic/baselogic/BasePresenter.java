@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
  */
 
 public abstract class BasePresenter<V extends BaseView> {
+
     private V view;
 
     public abstract void onViewAttached(@NonNull V view);
