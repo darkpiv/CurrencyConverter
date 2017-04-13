@@ -1,10 +1,12 @@
 package com.darkpiv.currencyconverter.ui.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.WindowManager;
@@ -15,6 +17,7 @@ import com.darkpiv.currencyconverter.ui.baseui.BaseFragment;
 import com.darkpiv.currencyconverter.ui.baseui.SmartFragmentStatePagerAdapter;
 import com.darkpiv.currencyconverter.ui.fragment.ConvertFragment;
 import com.darkpiv.currencyconverter.ui.fragment.RateFragment;
+import com.darkpiv.currencyconverter.util.NetworkUtils;
 import com.darkpiv.currencyconverter.util.ViewUtil;
 
 import butterknife.BindView;
@@ -37,6 +40,8 @@ public class MainActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
+        checkNetWork();
+
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpMain.setAdapter(adapterViewPager);
         slidingTabs.setupWithViewPager(vpMain);
@@ -61,7 +66,32 @@ public class MainActivity extends BaseActivity {
 
 
     }
+    private void checkNetWork() {
+        if(!NetworkUtils.isConnected(getApplicationContext())) {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
+            builder1.setMessage("Write your message here.");
+            builder1.setCancelable(true);
 
+            builder1.setPositiveButton(
+                    "Yes",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    "No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+        }
+    }
 
     @Override
     protected int getRootLayoutId() {

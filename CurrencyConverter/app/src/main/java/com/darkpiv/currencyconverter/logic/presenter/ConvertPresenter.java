@@ -36,6 +36,7 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
     private NetworkAPI networkAPI;
     private DecimalFormat df = new DecimalFormat("###.##");
     private Context context;
+
     public void setContext(Context context) {
         this.context = context;
     }
@@ -70,7 +71,6 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
     }
 
     public void convert() {
-
         double x = Double.parseDouble(list_currency_rate_data.get(idFrom).getRate());
         double y = Double.parseDouble(list_currency_rate_data.get(idTo).getRate());
         double mm = amount * y / x;
@@ -112,6 +112,12 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
         getView().onDataUpdated(strings, strings);
     }
 
+    private void onGetRateSuccess(String rate) {
+        parseRate(rate);
+        Log.d(TAG, "xxxxxxxxxx: " + list_currency_rate_data.size());
+
+    }
+
     public void parseRate(String rate) {
         String temp1 = rate;
         temp1 = temp1.replace("{", "");
@@ -145,11 +151,7 @@ public class ConvertPresenter extends BasePresenter<ConvertFragmentView> {
             }
         });
     }
-    private void onGetRateSuccess(String rate) {
-        parseRate(rate);
-        Log.d(TAG, "xxxxxxxxxx: "+list_currency_rate_data.size());
 
-    }
 
     private void onGetNameFailure(ErrorResponse errorResponse) {
         Log.d("XXX", "onGetRateFailure: " + errorResponse.getStatus());
